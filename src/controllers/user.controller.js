@@ -114,7 +114,9 @@ const registerUser = asyncHandler( async (req , res) =>{
         throw new ApiError(500 , "Somthing went wrong while registering the user")
     }
 
-    return res.status(201).json(
+    return res
+    .status(201)
+    .json(
         new ApiResponse(200 , createdUser , "User registered Successfully")
     )
 
@@ -276,7 +278,7 @@ const getCurrentUser = asyncHandler(async(req ,res)=>{
 
     return res
     .status(200)
-    .json(200 , req.user , " current user fetched successfully ")
+    .json( new ApiResponse(200 , req.user , " current user fetched successfully ") )
 })
 
 const updateAccountDetails = asyncHandler(async(req,res)=>{
@@ -299,7 +301,7 @@ const updateAccountDetails = asyncHandler(async(req,res)=>{
 
         return res
         .status(200)
-        .json(new ApiResponse (200 , user , "Account details updated successfully"))
+        .json(new ApiResponse(200 , user , "Account details updated successfully"))
 })
 
 const updateUserAvatar = asyncHandler(async(req , res)=>{
@@ -314,7 +316,7 @@ const updateUserAvatar = asyncHandler(async(req , res)=>{
     const avatar = await uploadOnCloudinary(avatarLocalPath)
 
     if(!avatar.url){
-        throw new ApiError(400 , "Error while uploading on avatar")
+        throw new ApiResponse(400 , "Error while uploading on avatar")
     }
 
     const user = await User.findByIdAndUpdate(
@@ -329,7 +331,7 @@ const updateUserAvatar = asyncHandler(async(req , res)=>{
 
     return res
     .status(200)
-    .json(new ApiError(200 , user , "Avatar updated successfully"))
+    .json(new ApiResponse(200 , user , "Avatar updated successfully"))
 
 
 })
